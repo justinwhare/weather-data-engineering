@@ -1,7 +1,8 @@
 import requests
 import os
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="weather-data-project/.env")
+
+load_dotenv(dotenv_path="./.env")
 
 api_key = os.getenv('api_key')
 api_url = f"http://api.weatherstack.com/current?access_key={api_key}&query=Halifax"
