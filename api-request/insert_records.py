@@ -1,5 +1,4 @@
 import psycopg2
-from api_request import fetch_data
 
 def connect_to_db():
     print("Connecting to the PostgreSQL database...")
@@ -69,18 +68,3 @@ def insert_records(conn, data):
     except psycopg2.Error as e:
         print(f"Error inserting data into the database: {e}")
         raise
-
-
-def main():
-    try:
-        #data = test_fetch()
-        data = fetch_data()
-        conn = connect_to_db()
-        create_table(conn)
-        insert_records(conn, data)
-    except Exception as e:
-        print(f"An error occurred during execution: {e}")
-    finally:
-        if 'conn' in locals():
-            conn.close()
-            print("Database connection closed.")

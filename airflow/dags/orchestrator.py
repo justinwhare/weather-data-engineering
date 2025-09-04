@@ -7,9 +7,24 @@ from docker.types import Mount
 
 sys.path.append('/opt/airflow/api-request')
 
-def safe_main_callable():
-    from insert_records import main
-    return main()
+from insert_records import connect_to_db, create_table, insert_records
+from api_request import fetch_data
+
+def fetch_and_insert():
+    data = fetch_data()
+    if not isinstance(data, dict):
+        raise ValueError(f"API did not return a dict, got: {type(data)}")
+    conn = connect_to_db()
+    try:
+        create_table(conn)
+        insert_records(conn, data)
+    except Exception as e:
+        print(f"An error occurred during execution: {e}")
+        raise
+    finally:
+        if 'conn' in locals():
+            conn.close()
+            print("Database connection closed.")        
 
 default_args = {
     'description':'Orchestrate data',
@@ -25,8 +40,8 @@ dag = DAG(
 
 with dag:
     task1 = PythonOperator(
-        task_id='ingest_data_task',
-        python_callable=safe_main_callable
+        task_id='fetch_and_ingest_data_task',
+        python_callable=fetch_and_insert
     )
     task2 = DockerOperator(
         task_id='transform_data_task',

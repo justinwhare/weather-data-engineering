@@ -2,10 +2,11 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="./.env")
+load_dotenv()
 
 api_key = os.getenv('api_key')
 api_url = f"http://api.weatherstack.com/current?access_key={api_key}&query=Halifax"
+
 
 def fetch_data():
     print("Fetching weather data from Weatherstack API...")
