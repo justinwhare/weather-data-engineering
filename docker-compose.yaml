@@ -1,8 +1,7 @@
 x-superset-user: &superset-user root
 x-superset-volumes: &superset-volumes
-  # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
   - ./docker:/app/docker
-  - ./superset:/app/superset
+  #- ./superset:/app/superset
   - ./docker/superset_config.py:/app/pythonpath/superset_config.py
 
 services:
@@ -72,7 +71,6 @@ services:
     user: *superset-user
     volumes: *superset-volumes
     environment:
-      # SUPERSET__SQLALCHEMY_EXAMPLES_URI: "duckdb:////app/data/examples.duckdb"
       DATABASE_DB: "superset_db"
       SUPERSET_LOAD_EXAMPLES: "no"
     healthcheck:
@@ -96,7 +94,6 @@ services:
         condition: service_completed_successfully
     volumes: *superset-volumes
     environment:
-      # SUPERSET__SQLALCHEMY_EXAMPLES_URI: "duckdb:////app/data/examples.duckdb"
       SUPERSET_LOAD_EXAMPLES: "no"
       DATABASE_DB: "superset_db"
     networks:

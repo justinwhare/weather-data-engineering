@@ -1,5 +1,5 @@
 import psycopg2
-from api_request import test_fetch, fetch_data
+from api_request import fetch_data
 
 def connect_to_db():
     print("Connecting to the PostgreSQL database...")
